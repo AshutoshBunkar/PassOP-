@@ -33,7 +33,7 @@ const Dashboard = () => {
           },
         });
 
-        const res = await fetch("http://localhost:3000/api/users", {
+        const res = await fetch("/api/users", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -62,7 +62,7 @@ const Dashboard = () => {
           },
         });
 
-        const res = await fetch("http://localhost:3000/api/master/status", {
+        const res = await fetch("/api/master/status", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -88,7 +88,7 @@ const Dashboard = () => {
         },
       });
 
-      const res = await fetch("http://localhost:3000/api/master/set", {
+      const res = await fetch("/api/master/set", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -161,7 +161,7 @@ const Dashboard = () => {
         },
       });
 
-      const res = await fetch("http://localhost:3000/api/master/verify", {
+      const res = await fetch("/api/master/verify", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

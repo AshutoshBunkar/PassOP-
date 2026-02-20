@@ -153,8 +153,8 @@ app.post("/api/master/verify", checkJwt, async (req, res) => {
       });
     }
 
-    const MAX_ATTEMPTS = 3;
-    const LOCK_TIME = 60 * 1000; // 15 min
+    const MAX_ATTEMPTS = 5;
+    const LOCK_TIME = 15 * 60 * 1000; // 15 min
 
     /* 🔒 CHECK LOCK */
     if (user.lockUntil && user.lockUntil > Date.now()) {
