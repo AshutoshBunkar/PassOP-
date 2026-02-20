@@ -1,36 +1,33 @@
-import connectDB from "../_mongo";
-import jwt from "jsonwebtoken";
-import { randomBytes } from "crypto";
+import clientPromise from "../utils/_mongo.js";
+import { verifyJwt } from "../utils/verifyJwt.js";
+import crypto from "crypto";
 
 export default async function handler(req, res) {
+  if (req.method !== "GET") {
+    return res.status(405).json({
+      error: "Method not allowed",
+    });
+  }
+
   try {
-    const db = await connectDB();
+    /* 🔐 Verify Auth0 JWT */
+    const user = await verifyJwt(req);
 
-    /* 🔐 Verify JWT */
-    const authHeader = req.headers.authorization;
+    const client = await clientPromise;
+    const db = client.db(process.env.DB_NAME);
 
-    if (!authHeader) {
-      return res.status(401).json({ error: "No token" });
-    }
+    const auth0Id = user.sub;
 
-    const token = authHeader.split(" ")[1];
-
-    const decoded = jwt.decode(token);
-
-    if (!decoded?.sub) {
-      return res.status(401).json({ error: "Invalid token" });
-    }
-
-    const auth0Id = decoded.sub;
-
-    const users = db.collection("users");
+    const users = db.collection("Users");
 
     /* 🔍 Find user */
-    let user = await users.findOne({ auth0Id });
+    let userDoc = await users.findOne({ auth0Id });
 
-    /* 🆕 Create if not exists */
-    if (!user) {
-      const salt = randomBytes(16).toString("hex");
+    /* 🆕 Create if first login */
+    if (!userDoc) {
+      const salt = crypto
+        .randomBytes(16)
+        .toString("hex");
 
       const newUser = {
         auth0Id,
@@ -42,18 +39,21 @@ export default async function handler(req, res) {
 
       await users.insertOne(newUser);
 
-      user = newUser;
+      userDoc = newUser;
+
+      console.log("🆕 New user created");
     }
 
     /* 📤 Return salt */
     return res.status(200).json({
-      salt: user.salt,
+      salt: userDoc.salt,
     });
-  } catch (err) {
-    console.error(err);
 
-    res.status(500).json({
-      error: "Server error",
+  } catch (err) {
+    console.error("USERS ERROR:", err);
+
+    return res.status(401).json({
+      error: "Unauthorized",
     });
   }
 }

@@ -1,13 +1,6 @@
 import CryptoJS from "crypto-js";
 
 /**
- * Generate random salt (store per user in DB)
- */
-export const generateSalt = () => {
-  return CryptoJS.lib.WordArray.random(16).toString();
-};
-
-/**
  * Derive 256-bit AES key from master password
  */
 export const deriveKey = (masterPassword, salt) => {

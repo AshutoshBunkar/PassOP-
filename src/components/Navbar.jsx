@@ -18,7 +18,7 @@ const Navbar = ({ onChangeMaster }) => {
           <div className="flex  items-center justify-center sm:justify-start gap-3 sm:gap-4 sm:ml-auto">
             {isAuthenticated && user && (
               <span className="text-xs sm:text-sm md:text-base font-semibold bg-gradient-to-r from-gray-300 to-green-300 bg-clip-text text-transparent text-center">
-                Welcome, {user.name}
+                Welcome, {user?.name?.split("@")[0]}
               </span>
             )}
 

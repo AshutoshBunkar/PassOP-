@@ -1,39 +1,69 @@
-const connectDB = require("../_mongo");
+import clientPromise from "../utils/_mongo.js";
+import { verifyJwt } from "../utils/verifyJwt.js";
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   try {
-    const db = await connectDB();
-    const collection = db.collection("passwords");
+    // 🔐 Auth
+    const user = await verifyJwt(req);
 
+    const client = await clientPromise;
+    const db = client.db(process.env.DB_NAME);
+
+    const userId = user.sub;
+
+    const passwords = db.collection("Passwords");
+
+    /* ================= GET ================= */
     if (req.method === "GET") {
-      const data = await collection.find({}).toArray();
-      return res.json({ success: true, result: data });
+      const data = await passwords
+        .find({ userId })
+        .sort({ createdAt: -1 })
+        .toArray();
+
+      return res.json({
+        success: true,
+        result: data,
+      });
     }
 
+    /* ================= POST ================= */
     if (req.method === "POST") {
-      if (process.env.READ_ONLY === "true") {
-        return res.status(403).json({ message: "Read only mode" });
+      const { site, username, password } = req.body;
+
+      if (!site || !username || !password) {
+        return res.status(400).json({
+          success: false,
+          message: "All fields required",
+        });
       }
 
-      const password = req.body;
+      const newPass = {
+        site,
+        username,
+        password,
+        userId,
+        createdAt: new Date(),
+      };
 
-      if (!password) {
-        return res.status(400).json({ success: false });
-      }
+      const result = await passwords.insertOne(newPass);
 
-      const result = await collection.insertOne(password);
-
-      return res.json({ success: true, result });
+      return res.json({
+        success: true,
+        result: {
+          ...newPass,
+          _id: result.insertedId,
+        },
+      });
     }
 
-    res.status(405).json({ message: "Method not allowed" });
+    return res.status(405).end();
 
   } catch (err) {
-    console.error("API CRASH ❌", err);
+    console.error("PASSWORDS INDEX ERROR:", err);
 
-    return res.status(500).json({
+    return res.status(401).json({
       success: false,
-      error: err.message
+      error: "Unauthorized",
     });
   }
-};
+}
