@@ -1,16 +1,8 @@
-# 🔐 PassOP — Secure Password Manager (Serverless)
+# 🔐 PassOP — Secure Password Manager
 
-PassOP is a modern, secure, and fully serverless **Password Manager Web Application** built using **React, Vercel Serverless Functions, Auth0, and MongoDB Atlas**.
+PassOP is a modern, secure **Password Manager Web Application** built using **React, Express.js, Auth0, and MongoDB Atlas**.
 
 It follows a **zero-knowledge-style encryption model**, where sensitive data is encrypted on the client side before being stored in the database.
-
-This project demonstrates **real-world full-stack architecture, security practices, and cloud deployment**.
-
----
-
-## 🌐 Live Demo
-
-👉 https://project-password-manager-eight.vercel.app/
 
 ---
 
@@ -40,12 +32,6 @@ This project demonstrates **real-world full-stack architecture, security practic
 - Show / Hide passwords
 - User-isolated vault
 
-### ☁️ Cloud & Deployment
-- Serverless backend
-- MongoDB Atlas database
-- Environment configs
-- Production-ready setup
-
 ---
 
 ## 🛠️ Tech Stack
@@ -53,68 +39,106 @@ This project demonstrates **real-world full-stack architecture, security practic
 | Layer | Technology |
 |-------|------------|
 | Frontend | React, Vite, Tailwind CSS |
-| Backend | Vercel Serverless Functions |
+| Backend | Express.js (Node.js) |
 | Auth | Auth0 |
 | Database | MongoDB Atlas |
 | Crypto | CryptoJS, bcryptjs |
 | JWT | jose |
-| Hosting | Vercel |
 | Version Control | Git & GitHub |
 
 ---
 
 ## 🏗️ Project Architecture
 
-Frontend (React)
-      ↓
-Serverless APIs (Vercel)
-      ↓
+```
+Frontend (React + Vite)
+       ↓
+Express.js Server (API)
+       ↓
 MongoDB Atlas
+```
 
 ---
 
 ## 📁 Folder Structure
 
-api/
-├── master/
-├── users/
-├── passwords/
-└── utils/
-
-src/
-├── components/
-├── pages/
-└── utils/
-
----
-
-## 🔐 Security Model
-
-- Master password never stored
-- Client-side encryption
-- Encrypted storage
-- Per-user isolation
-- JWT protected APIs
-
-### Implemented Protections
-
-- AES Encryption
-- PBKDF2
-- bcrypt
-- JWT Verification
-- Brute-force Prevention
+```
+├── server.js          # Express backend (all API routes)
+├── src/
+│   ├── components/    # React components
+│   ├── pages/         # React pages
+│   └── utils/         # Client-side crypto
+├── public/            # Static assets & icons
+├── index.html         # Vite entry
+├── vite.config.js     # Vite config (with dev proxy)
+├── package.json
+└── .env               # Environment variables
+```
 
 ---
 
 ## ⚙️ Environment Variables
 
-Create `.env.local` file in root:
+Create a `.env` file in root:
 
+```env
 MONGO_URI=your_mongodb_uri
 DB_NAME=your_database
 
 AUTH0_DOMAIN=your_auth0_domain
 AUTH0_AUDIENCE=your_auth0_audience
+
+VITE_AUTH0_DOMAIN=your_auth0_domain
+VITE_AUTH0_CLIENT_ID=your_auth0_client_id
+VITE_AUTH0_AUDIENCE=your_auth0_audience
+```
+
+---
+
+## 🚀 Installation & Setup
+
+### 1. Clone Repository
+
+```bash
+git clone https://github.com/AshutoshBunkar/PassOP-.git
+cd PassOP-
+```
+
+### 2. Install Dependencies
+
+```bash
+npm install
+```
+
+### 3. Setup Environment
+
+Create `.env` file with the variables listed above.
+
+### 4. Run in Development
+
+Open **two terminals**:
+
+```bash
+# Terminal 1 — Backend
+node server.js
+
+# Terminal 2 — Frontend
+npm run dev
+```
+
+The frontend runs on `http://localhost:5173` and proxies API calls to the Express server on port `3000`.
+
+### 5. Run in Production
+
+```bash
+# Build frontend
+npm run build
+
+# Start server (serves both API + frontend)
+node server.js
+```
+
+Visit `http://localhost:3000`
 
 ---
 
@@ -147,70 +171,14 @@ AUTH0_AUDIENCE=your_auth0_audience
 
 ---
 
-## 🚀 Installation & Setup
+## 🔐 Security Model
 
-### 1. Clone Repository
-
-git clone https://github.com/your-username/passop.git
-cd passop
-
-### 2. Install Dependencies
-
-npm install
-
-### 3. Setup Environment
-
-Configure `.env.local` file.
-
-### 4. Run Locally
-
-npm run dev
-
----
-
-## 📈 Scalability
-
-- CDN-based frontend
-- Stateless APIs
-- Managed database
-- Cloud authentication
-
----
-
-## ⚖️ Design Trade-offs
-
-| Decision | Advantage | Limitation |
-|----------|-----------|------------|
-| Serverless | Auto scale | Cold starts |
-| Client Encryption | High privacy | Complexity |
-| Auth0 | Secure auth | Dependency |
-| MongoDB | Flexible | NoSQL limits |
-
----
-
-## 🏛️ System Design
-
-### Authentication Flow
-
-1. User logs in using Auth0
-2. Auth0 issues JWT
-3. Token attached to API
-4. Server verifies token
-5. Request processed
-
-### Encryption Flow
-
-1. User enters master password
-2. PBKDF2 derives AES key
-3. Data encrypted locally
-4. Ciphertext sent to backend
-5. Stored securely
-
-### Data Isolation
-
-All records scoped by:
-
-{ userId: auth0Id }
+- Master password never stored (only bcrypt hash)
+- Client-side AES encryption before sending to server
+- Per-user PBKDF2 key derivation
+- Per-user isolation via Auth0 `sub` claim
+- JWT protected APIs
+- Brute-force prevention with account lockout
 
 ---
 
@@ -219,22 +187,10 @@ All records scoped by:
 Ashutosh  
 Engineering Student | Full-Stack Developer
 
-GitHub: https://github.com/your-username  
-LinkedIn: https://linkedin.com/in/your-profile
+GitHub: https://github.com/AshutoshBunkar
 
 ---
 
 ## 📄 License
 
 MIT License
-
----
-
-## 🎯 Design Philosophy
-
-- Security over convenience
-- Privacy over performance
-- Scalability over simplicity
-- Clean code over shortcuts
-
-Built with modern cloud-native best practices.
