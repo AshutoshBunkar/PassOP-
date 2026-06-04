@@ -1,4 +1,4 @@
-# 🔐 PassOP — Secure Password Manager
+#  PassOP — Secure Password Manager
 
 PassOP is a modern, secure **Password Manager Web Application** built using **React, Express.js, Auth0, and MongoDB Atlas**.
 
@@ -6,27 +6,27 @@ It follows a **zero-knowledge-style encryption model**, where sensitive data is 
 
 ---
 
-## ✨ Key Features
+##  Key Features
 
-### 🔑 Authentication & Security
+###  Authentication & Security
 - Secure login using Auth0
 - JWT-based API authentication
 - Brute-force protection
 - Account lockout system
 
-### 🔒 Encryption System
+###  Encryption System
 - Client-side AES encryption
 - PBKDF2 key derivation
 - Per-user cryptographic salt
 - Zero-knowledge inspired model
 
-### 🗝️ Master Password System
+###  Master Password System
 - First-time setup
 - Secure verification
 - Change password with re-encryption
 - Vault reset option
 
-### 📦 Vault Management
+###  Vault Management
 - Add, edit, delete credentials
 - Copy to clipboard
 - Show / Hide passwords
@@ -34,7 +34,7 @@ It follows a **zero-knowledge-style encryption model**, where sensitive data is 
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 | Layer | Technology |
 |-------|------------|
@@ -48,7 +48,7 @@ It follows a **zero-knowledge-style encryption model**, where sensitive data is 
 
 ---
 
-## 🏗️ Project Architecture
+##  Project Architecture
 
 ```
 Frontend (React + Vite)
@@ -60,7 +60,7 @@ MongoDB Atlas
 
 ---
 
-## 📁 Folder Structure
+##  Folder Structure
 
 ```
 ├── server.js          # Express backend (all API routes)
@@ -77,7 +77,7 @@ MongoDB Atlas
 
 ---
 
-## ⚙️ Environment Variables
+##  Environment Variables
 
 Create a `.env` file in root:
 
@@ -95,7 +95,7 @@ VITE_AUTH0_AUDIENCE=your_auth0_audience
 
 ---
 
-## 🚀 Installation & Setup
+##  Installation & Setup
 
 ### 1. Clone Repository
 
@@ -142,7 +142,7 @@ Visit `http://localhost:3000`
 
 ---
 
-## 🧪 API Endpoints
+##  API Endpoints
 
 ### Master Password
 
@@ -171,7 +171,7 @@ Visit `http://localhost:3000`
 
 ---
 
-## 🔐 Security Model
+##  Security Model
 
 - Master password never stored (only bcrypt hash)
 - Client-side AES encryption before sending to server
@@ -182,7 +182,7 @@ Visit `http://localhost:3000`
 
 ---
 
-## 👨‍💻 Author
+##  Author
 
 Ashutosh  
 Engineering Student | Full-Stack Developer
@@ -191,6 +191,6 @@ GitHub: https://github.com/AshutoshBunkar
 
 ---
 
-## 📄 License
+##  License
 
 MIT License
